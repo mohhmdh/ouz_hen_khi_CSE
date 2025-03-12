@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            list-style: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            height: 100vh;
+            transition: margin-left 0.5s;
+            display: flex;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            width: 240px;
+            height: 100%;
+            background: #080325;
+            transition: left 0.5s;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar header {
+            color: white;
+            font-size: 22px;
+            text-align: left;
+            padding-left: 20px;
+            padding-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar header img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .sidebar ul {
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: padding-left 0.3s;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 15px;
+        }
+
+        .sidebar ul li:hover a {
+            padding-left: 30px;
+        }
+
+        .toggle-btn, .close-btn {
+            position: absolute;
+            font-size: 20px;
+            color: white;
+            background: #080325;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .toggle-btn {
+            left: 20px;
+            top: 15px;
+        }
+
+        .close-btn {
+            display: none;
+            right: 20px;
+            top: 15px;
+        }
+
+        #check {
+            display: none;
+        }
+
+        #check:checked ~ .sidebar {
+            left: 0;
+        }
+
+        #check:checked ~ .toggle-btn {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #check:checked ~ .sidebar .close-btn {
+            display: flex;
+        }
+
+        #check:checked ~ .content {
+            transform: translateX(240px);
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .setting-bottom {
+            margin-top: auto;
+            padding: 20px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 10%;
+            transition: transform 0.5s ease-in-out;
+            transition: transform 0.5s ease-out;
+            max-width: 70vw;
+        }
+
+        .chart-container, .stats-container {
+            max-width: 80vw;
+            margin: 0 auto;
+        }
+        
+        .stats-container {
+            margin-left: 10%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 40px;
+            gap: 10px;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30%;
+            height: 10%;
+            min-width: 250px;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+        
+        .stat-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #financeChart {
+            margin-left: 5%;
+            width: 90% !important;
+            height: auto !important;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width:60vw;
+            margin: auto;
+            flex-wrap: wrap;
+        }
+        
+        .stat-header h2 {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .stat-filters {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .stat-filters select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-filters select:hover {
+            border-color: #4F46E5;
+        }
+        
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="check">
+    <label for="check" class="toggle-btn">
+        <i class="fas fa-bars"></i>
+    </label>
+    
+    <div class="sidebar">
+        <header>
+            <img src="images/tracker_icon.png" alt="Tracker Icon">
+            Tracker
+        </header>
+        <label for="check" class="close-btn">
+            <i class="fas fa-times"></i>
+        </label>
+        <ul>
+            <li><a href="#"><i class="fas fa-wallet"></i>My Wallet</a></li>
+            <li><a href="#"><i class="fas fa-credit-card"></i>My Card</a></li>
+            <li><a href="/chart.html"><i class="fas fa-chart-pie"></i>Finance Chart</a></li>
+            <li><a href="/Transactions.html"><i class="fas fa-file-invoice-dollar"></i>Recent Transactions</a></li>
+        </ul>
+        <div class="setting-bottom">
+            <ul>
+                <li><a href="#"><i class="fas fa-cogs"></i>Settings</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="content">
+        <h1>Finance Chart</h1>
+        <p>Keep track of your financial plan</p>
+        
+        <div class="stat-header">
+            <h2>Statistic</h2>
+            <div class="stat-filters">
+                <select>
+                    <option>Income Chart</option>
+                    <option>Outcome Chart</option>
+                </select>
+                <select>
+                    <option>This Year</option>
+                    <option>Last Year</option>
+                </select>
+            </div>
+        </div>
+        
+          
+        <div class="chart-container">
+            <canvas id="financeChart"></canvas>
+        </div>
+        <div class="stats-container">
+            <div class="stat-box">
+                <img src="images/stars.png" class="stat-icon" alt="Income Icon">
+                <div class="stat-text">Lifetime Income: $40,728</div>
+            </div>
+            <div class="stat-box">
+                <img src="images/money1.png" class="stat-icon" alt="Outcome Icon">
+                <div class="stat-text">Lifetime Outcome: $30,239</div>
+            </div>
+            <div class="stat-box">
+                <img src="images/money2.png" class="stat-icon" alt="Bonus Icon">
+                <div class="stat-text">Bonus Income: $2,490</div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('financeChart').getContext('2d');
+        const financeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Monthly Income',
+                    data: [1000, 1500, 700, 2200, 1600, 2100, 900, 2800, 1300, 1800, 1700, 2500],
+                    borderColor: '#4F46E5',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
