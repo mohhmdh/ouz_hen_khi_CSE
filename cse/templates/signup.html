@@ -1,0 +1,47 @@
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href="{% static 'styles2.css' %}">
+</head>
+
+<body>
+
+<div id="box1">
+  <div id="signin">
+  
+<form method="POST" action="/signup/">
+    {% csrf_token %}
+    <h1> create account  </h1>
+    <h5>already have an account  ?  <a class="bt"  href="{% url 'signin' %}"> signin</a> </h5> 
+    <input type="text" name="username" placeholder="username"   />
+    <p> </p>
+     <input type="email" name="email" placeholder="email adress"   />
+        <p> </p>
+     <input type="password" name="password1" placeholder="passsword"   />
+        <p> </p>
+        <input type="password" name="password2" placeholder="comfirm passsword"   />
+        <p> </p>
+        <label for="rememeber">
+            <input type="checkbox">
+            i`ve read and agreed with ur <span style="color: #0A65CC" > Term os services </span>
+        </label>
+        <p> </p>
+        <button id="bt" type="submit">Sign In -> </button> 
+
+        {% for message in messages%}
+        <p  style="color: red" > {{message}} </p>
+        {% endfor %}
+</form>
+  </div>
+</div>
+
+
+<div id="box2">
+    <img id="img" src="{% static 'C:\Users\asus\cse\static\work.png' %}" alt="work"   >
+    
+</div>
+
+</body>
+
+
+
