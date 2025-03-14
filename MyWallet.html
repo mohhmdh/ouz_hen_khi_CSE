@@ -1,1 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+    <input type="checkbox" id="check">
+    <label for="check" class="toggle-btn">
+        <i class="fas fa-bars"></i>
+    </label>
+    
+    <div class="sidebar">
+        <header>
+            <img src="images/tracker_icon.png" alt="Tracker Icon">
+            Tracker
+        </header>
+        <label for="check" class="close-btn">
+            <i class="fas fa-times"></i>
+        </label>
+        <ul>
+            <li><a href="/MyWallet.html"><i class="fas fa-wallet"></i>My Wallet</a></li>
+            <li><a href="/MyCard.html"><i class="fas fa-credit-card"></i>My Card</a></li>
+            <li><a href="/chart.html"><i class="fas fa-chart-pie"></i>Finance Chart</a></li>
+            <li><a href="/Transactions.html"><i class="fas fa-file-invoice-dollar"></i>Recent Transactions</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <main class="main-content">
+            <h1>My Wallet</h1>
+            <p class="subtitle">Keep track of your financial plan</p>
+            <div class="balance-card">
+                <h2>:wave: Hi Hamza!</h2>
+                <p class="balance">$124,543</p>
+            </div>
+            <div class="wallets">
+                <div class="wallet">
+                    <h3>Emergency Fund</h3>
+                    <p>$300 / $1000</p>
+                    <div class="progress"><div class="progress-bar" style="width: 30%"></div></div>
+                </div>
+                <div class="wallet">
+                    <h3>Travel Plan</h3>
+                    <p>$1000 / $2000</p>
+                    <div class="progress"><div class="progress-bar" style="width: 50%"></div></div>
+                </div>
+                <div class="wallet">
+                    <h3>Education</h3>
+                    <p>$7000 / $10000</p>
+                    <div class="progress"><div class="progress-bar" style="width: 70%"></div></div>
+                </div>
+                <div class="wallet">
+                    <h3>Foods and Groceries</h3>
+                    <p>$300 / $1000</p>
+                    <div class="progress"><div class="progress-bar" style="width: 30%"></div></div>
+                </div>
+                <div class="wallet">
+                    <h3>Repair Vehicle</h3>
+                    <p>$900 / $1000</p>
+                    <div class="progress"><div class="progress-bar" style="width: 90%"></div></div>
+                </div>
+                <div class="wallet">
+                    <h3>Donation</h3>
+                    <p>$200 / $1000</p>
+                    <div class="progress"><div class="progress-bar" style="width: 20%"></div></div>
+                </div>
+            </div>
+            <button class="create-wallet">Create New Wallet</button>
+        </main>
+    </div>
+</body>
+</html>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        text-decoration: none;
+        list-style: none;
+        font-family: 'Roboto', sans-serif;
+    }
 
+    body {
+        background: #f8f9fa;
+        display: flex;
+        height: 100vh;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        width: 240px;
+        height: 100%;
+        background: #080325;
+        transition: left 0.5s;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar header {
+        color: white;
+        font-size: 22px;
+        text-align: left;
+        padding-left: 20px;
+        padding-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .sidebar header img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    .sidebar ul {
+        flex-grow: 1;
+    }
+
+    .sidebar ul li a {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        color: white;
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: padding-left 0.3s;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 15px;
+    }
+
+    .sidebar ul li:hover a {
+        padding-left: 30px;
+    }
+
+    .toggle-btn, .close-btn {
+        position: absolute;
+        font-size: 20px;
+        color: white;
+        background: #080325;
+        padding: 12px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.5s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+    }
+
+    .toggle-btn {
+        left: 20px;
+        top: 15px;
+    }
+
+    .close-btn {
+        display: none;
+        right: 20px;
+        top: 15px;
+    }
+
+    #check {
+        display: none;
+    }
+
+    #check:checked ~ .sidebar {
+        left: 0;
+    }
+
+    #check:checked ~ .toggle-btn {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #check:checked ~ .sidebar .close-btn {
+        display: flex;
+    }
+
+    #check:checked ~ .content {
+        transform: translateX(240px);
+        transition: transform 0.5s ease-in-out;
+        transition: transform 0.5s ease-out;
+    }
+    .setting-bottom {
+        margin-top: auto;
+        padding: 20px;
+    }
+    .content {
+        margin-top: 0,5%;
+        flex: 1;
+        padding: 20px;
+        margin-left: 100px;
+        transition: transform 0.5s ease-in-out;
+        transition: transform 0.5s ease-out;
+    }
+
+    .logo {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    nav ul {
+        list-style: none;
+        padding: 0;
+    }
+    nav ul li {
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .badge {
+        background: red;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        margin-left: auto;
+    }
+    .settings {
+        margin-top: auto;
+    }
+    .main-content {
+        flex-grow: 1;
+        padding: 20px;
+        width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    height: auto;
+    }
+    .balance-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .wallets {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .wallet {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .wallets {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+    .progress {
+        background: #ddd;
+        border-radius: 30px;
+        height: 10px;
+        margin-top: 10px;
+        position: relative;
+    }
+    .progress-bar {
+        background: #4CAF50;
+        height: 100%;
+        border-radius: 10px;
+    }
+    .create-wallet {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background: blue;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+</style>
