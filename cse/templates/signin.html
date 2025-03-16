@@ -25,17 +25,20 @@
         <p> </p>
         <button id="bt" type="submit">Sign In -> </button> 
 
-
+        {% for message in messages%}
+        <p  style="color: red" > {{message}}  </p>
+ {% endfor %}
 </form>
   </div>
 </div>
 
 
 <div id="box2">
-    <img id="img" src="{% static 'C:\Users\asus\cse\static\work.png' %}" alt="work"   >
+    <img id="img" src="{% static 'C:\Users\asus\ouz_hen_khi_CSE\cse\static\work.png' %}" alt="work"   >
 </div>
 
 </body>
+
 
 
 
