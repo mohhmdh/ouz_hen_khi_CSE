@@ -1,13 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Menu</title>
+    <title>Finance Chart</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        * {
+         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -129,10 +131,11 @@
 
         .content {
             flex: 1;
+
+
             padding: 20px;
             margin-left: 10%;
             transition: transform 0.5s ease-in-out;
-            transition: transform 0.5s ease-out;
             max-width: 70vw;
         }
 
@@ -140,7 +143,7 @@
             max-width: 80vw;
             margin: 0 auto;
         }
-        
+
         .stats-container {
             margin-left: 10%;
             display: flex;
@@ -149,7 +152,7 @@
             padding-top: 40px;
             gap: 10px;
         }
-        
+
         .stat-box {
             background: white;
             padding: 20px;
@@ -162,14 +165,14 @@
             height: 10%;
             min-width: 250px;
         }
-        
+
         .stat-icon {
             width: 40px;
             height: 40px;
             margin-right: 10px;
             border-radius: 5px;
         }
-        
+
         .stat-text {
             font-size: 18px;
             font-weight: bold;
@@ -185,23 +188,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width:60vw;
+            max-width: 60vw;
             margin: auto;
             flex-wrap: wrap;
         }
-        
+
         .stat-header h2 {
             font-size: 22px;
             font-weight: bold;
         }
-        
+
         .stat-filters {
             display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
         }
-        
+
         .stat-filters select {
             padding: 10px 15px;
             border-radius: 8px;
@@ -213,11 +216,72 @@
             transition: all 0.3s ease-in-out;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .stat-filters select:hover {
             border-color: #4F46E5;
         }
-        
+
+        @media (max-width: 768px) {
+            /* Sidebar settings */
+            .sidebar {
+                position: fixed;
+                left: -240px;
+                top: 0;
+                height: 100%;
+                width: 240px;
+                background-color: #080325;
+                z-index: 9999;
+                transition: left 0.3s ease-in-out;
+            }
+
+            /* When the checkbox is checked, bring the sidebar into view */
+            #check:checked ~ .sidebar {
+                left: 0;
+            }
+
+            /* Content */
+            .content {
+                padding: 10px;
+                margin-left: 0;
+                max-width: 100vw;
+                transition: none;
+            }
+
+            /* Sidebar toggle button */
+            .toggle-btn {
+                position: absolute;
+                left: 20px;
+                top: 15px;
+                z-index: 10000;
+            }
+
+            /* Close button */
+            .close-btn {
+                display: none;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                font-size: 20px;
+                color: white;
+                background: #080325;
+                padding: 12px;
+                border-radius: 50%;
+                cursor: pointer;
+                transition: all 0.5s;
+                z-index: 9999;
+            }
+
+            /* Show close button when the sidebar is open */
+            #check:checked ~ .sidebar .close-btn {
+                display: flex;
+            }
+
+            /* Hide toggle button when sidebar is open */
+            #check:checked ~ .toggle-btn {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -225,20 +289,20 @@
     <label for="check" class="toggle-btn">
         <i class="fas fa-bars"></i>
     </label>
-    
+
     <div class="sidebar">
         <header>
-            <img src="images/tracker_icon.png" alt="Tracker Icon">
+            <img src="{% static 'images/tracker_icon.png' %}" alt="Tracker Icon">
             Tracker
         </header>
         <label for="check" class="close-btn">
             <i class="fas fa-times"></i>
         </label>
         <ul>
-            <li><a href="#"><i class="fas fa-wallet"></i>My Wallet</a></li>
-            <li><a href="/MyCard.html"><i class="fas fa-credit-card"></i>My Card</a></li>
-            <li><a href="/chart.html"><i class="fas fa-chart-pie"></i>Finance Chart</a></li>
-            <li><a href="/Transactions.html"><i class="fas fa-file-invoice-dollar"></i>Recent Transactions</a></li>
+            <li><a href="{% url 'mywallet' %}"><i class="fas fa-wallet"></i>My Wallet</a></li>
+            <li><a href="{% url 'mycard' %}"><i class="fas fa-credit-card"></i>My Card</a></li>
+            <li><a href="{% url 'chart' %}"><i class="fas fa-chart-pie"></i>Finance Chart</a></li>
+            <li><a href="{% url 'transactions' %}"><i class="fas fa-file-invoice-dollar"></i>Recent Transactions</a></li>
         </ul>
         <div class="setting-bottom">
             <ul>
@@ -246,55 +310,61 @@
             </ul>
         </div>
     </div>
-    
+
     <div class="content">
         <h1>Finance Chart</h1>
         <p>Keep track of your financial plan</p>
-        
+
         <div class="stat-header">
             <h2>Statistic</h2>
             <div class="stat-filters">
-                <select>
-                    <option>Income Chart</option>
-                    <option>Outcome Chart</option>
+                <select id="chart-type-select">
+                    <option value="income">Income Chart</option>
+                    <option value="outcome">Outcome Chart</option>
                 </select>
-                <select>
-                    <option>This Year</option>
-                    <option>Last Year</option>
+                <select id="year-select">
+                    <option value="{{ current_year }}">This Year ({{ current_year }})</option>
+                    <option value="{{ current_year|add:"-1" }}">Last Year ({{ current_year|add:"-1" }})</option>
                 </select>
             </div>
         </div>
-        
-          
+
+
         <div class="chart-container">
             <canvas id="financeChart"></canvas>
         </div>
         <div class="stats-container">
             <div class="stat-box">
-                <img src="images/stars.png" class="stat-icon" alt="Income Icon">
-                <div class="stat-text">Lifetime Income: $40,728</div>
+                <img src="{% static 'images/stars.png' %}" class="stat-icon" alt="Income Icon">
+                <div class="stat-text">Lifetime Income: ${{ lifetime_income }}</div>
             </div>
             <div class="stat-box">
-                <img src="images/money1.png" class="stat-icon" alt="Outcome Icon">
-                <div class="stat-text">Lifetime Outcome: $30,239</div>
+                <img src="{% static 'images/money1.png' %}" class="stat-icon" alt="Outcome Icon">
+                <div class="stat-text">Lifetime Outcome: ${{ lifetime_outcome }}</div>
             </div>
             <div class="stat-box">
-                <img src="images/money2.png" class="stat-icon" alt="Bonus Icon">
-                <div class="stat-text">Bonus Income: $2,490</div>
+                <img src="{% static 'images/money2.png' %}" class="stat-icon" alt="Bonus Icon">
+                <div class="stat-text">Bonus Income: ${{ bonus_income }}</div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('financeChart').getContext('2d');
-        const financeChart = new Chart(ctx, {
+        let financeChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                labels: [{% for month in months %}"{{ month }}",{% endfor %}],
                 datasets: [{
                     label: 'Monthly Income',
-                    data: [1000, 1500, 700, 2200, 1600, 2100, 900, 2800, 1300, 1800, 1700, 2500],
+                    data: [{% for item in monthly_data %}{{ item.income }},{% endfor %}],
                     borderColor: '#4F46E5',
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: 'Monthly Outcome',
+                    data: [{% for item in monthly_data %}{{ item.outcome }},{% endfor %}],
+                    borderColor: '#FF6B6B',
                     borderWidth: 2,
                     fill: false
                 }]
@@ -308,6 +378,41 @@
                 }
             }
         });
+
+        const chartTypeSelect = document.getElementById('chart-type-select');
+        const yearSelect = document.getElementById('year-select');
+
+        chartTypeSelect.addEventListener('change', updateChart);
+        yearSelect.addEventListener('change', updateChart);
+
+        function updateChart() {
+            const chartType = chartTypeSelect.value;
+            const selectedYear = yearSelect.value;
+
+            // In a real application, you would fetch data from the server
+            // based on the selected chart type and year.  For this example,
+            // we'll just update the labels.
+
+            let newData = [];
+            let newLabel = '';
+            let borderColor = '';
+
+            if (chartType === 'income') {
+                newLabel = 'Monthly Income';
+                borderColor = '#4F46E5';
+                newData = [{% for item in monthly_data %}{{ item.income }},{% endfor %}];
+
+            } else if (chartType === 'outcome') {
+                newLabel = 'Monthly Outcome';
+                borderColor = '#FF6B6B';
+                newData = [{% for item in monthly_data %}{{ item.outcome }},{% endfor %}];
+            }
+
+             financeChart.data.datasets[0].label = newLabel;
+             financeChart.data.datasets[0].borderColor = borderColor;
+             financeChart.data.datasets[0].data = newData;
+             financeChart.update();
+        }
     </script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+{% load static %}
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="card_n">Card Number:</label>
+    <input type="text" name="card_n" placeholder="Card number" required />
+
+    <p></p>
+
+    <label for="e_date">Expiration Date:</label>
+    <input type="month" name="e_date" placeholder="Expiration date" required />
+
+    <p></p>
+
+    <label for="cvv">CVV:</label>
+    <input type="text" name="cvv" placeholder="CVV" required maxlength="3" pattern="[0-9]{3}" />
+
+    <p></p>
+
+    <button type="submit">Submit</button>
+</form>

@@ -6,6 +6,7 @@
     <title>Finance Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+   
     <style>
         * {
             margin: 0;
@@ -198,10 +199,10 @@
             <i class="fas fa-times"></i>
         </label>
         <ul>
-            <li><a href="#"><i class="fas fa-wallet"></i>My Wallet</a></li>
-            <li><a href="/MyCard.html"><i class="fas fa-credit-card"></i>My Card</a></li>
-            <li><a href="/chart.html"><i class="fas fa-chart-pie"></i>Finance Chart</a></li>
-            <li><a href="/Transactions.html"><i class="fas fa-file-invoice-dollar"></i>Recent Transactions</a></li>
+            <li><a href="{% url 'mywallet' %}"><i class="fas fa-wallet"></i>My Wallet</a></li>
+            <li><a href="{% url 'mycard' %}"><i class="fas fa-credit-card"></i>My Card</a></li>
+            <li><a href="{% url 'chart' %}"><i class="fas fa-chart-pie"></i>Finance Chart</a></li>
+            <li><a href="{% url 'transactions' %}"><i class="fas fa-file-invoice-dollar"></i>Recent Transactions</a></li>
         </ul>
     </div>
 
@@ -219,66 +220,39 @@
                     </tr>
                 </thead>
                 <tbody id="transaction-table">
-                    <!-- Rows will be inserted here by JavaScript -->
+                    {% for transaction in page_obj %}
+                    <tr>
+                        <td>{{ transaction.transaction_id }}</td>
+                        <td>{{ transaction.name }}</td>
+                        <td>{{ transaction.date }}</td>
+                        <td>{{ transaction.status }}</td>
+                        <td style="color: {% if transaction.amount < 0 %}red{% else %}green{% endif %}">{% if transaction.amount < 0 %}-{% endif %}${{ transaction.amount }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
             <div class="pagination">
-                <button id="prevPage">Previous</button>
-                <span id="pageNumber">1</span>
-                <button id="nextPage">Next</button>
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+        
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+        
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
             </div>
         </div>
     </div>
 
     <script>
-        const transactions = [
-            { id: 962296152, name: "Sherman Blankenship", date: "08 Jan, 2022", status: "Pending", amount: 217.90 },
-            { id: 962296152, name: "Sherman Blankenship", date: "08 Jan, 2022", status: "Pending", amount: 217.90 },
-            { id: 962296152, name: "Sherman Blankenship", date: "08 Jan, 2022", status: "Pending", amount: 217.90 },
-            { id: 829892537, name: "Claudio Barrera", date: "06 Jan, 2022", status: "Completed", amount: 329.90 },
-            { id: 741560657, name: "Clifton Daniel", date: "03 Jan, 2022", status: "Completed", amount: -549.90 },
-            { id: 529040347, name: "Curt Boyer", date: "01 Jan, 2022", status: "Completed", amount: -238.90 },
-            { id: 398078341, name: "Jeff Proctor", date: "31 Dec, 2021", status: "Completed", amount: -283.90 },
-            { id: 197401837, name: "Rodger Fritz", date: "24 Dec, 2021", status: "Completed", amount: 237.90 }
-        ];
-
-        let currentPage = 1;
-        const rowsPerPage = 6;
-
-        function displayTable(page) {
-            const tableBody = document.getElementById("transaction-table");
-            tableBody.innerHTML = "";
-            const start = (page - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            const paginatedItems = transactions.slice(start, end);
-            paginatedItems.forEach(tran => {
-                const row = `<tr>
-                                <td>${tran.id}</td>
-                                <td>${tran.name}</td>
-                                <td>${tran.date}</td>
-                                <td>${tran.status}</td>
-                                <td style="color: ${tran.amount < 0 ? 'red' : 'green'}">${tran.amount < 0 ? '-' : ''}$${Math.abs(tran.amount).toFixed(2)}</td>
-                            </tr>`;
-                tableBody.innerHTML += row;
-            });
-            document.getElementById("pageNumber").innerText = page;
-        }
-
-        document.getElementById("prevPage").addEventListener("click", function() {
-            if (currentPage > 1) {
-                currentPage--;
-                displayTable(currentPage);
-            }
-        });
-
-        document.getElementById("nextPage").addEventListener("click", function() {
-            if (currentPage < Math.ceil(transactions.length / rowsPerPage)) {
-                currentPage++;
-                displayTable(currentPage);
-            }
-        });
-
-        displayTable(currentPage);
+        // No JavaScript needed for table population or pagination with Django's template tags
     </script>
 </body>
 </html>

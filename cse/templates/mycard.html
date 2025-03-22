@@ -2,8 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>My Card</title>
 </head>
@@ -131,6 +132,7 @@ body {
 
 .content {
     margin-top: 0,5%;
+    display: flex;
     flex: 1;
     padding: 20px;
     margin-left: 100px;
@@ -142,6 +144,7 @@ body {
 #box1{
     width: 79.17%;
     height: 100%;
+    flex-grow: 1;
  
     display: grid;
     grid-template-columns: 0 1fr;
@@ -156,9 +159,10 @@ body {
         grid-area: 2 / 2 / 3 / 3; 
 }
 .div2 { 
-      
+       
         grid-area: 4 / 2 / 5 / 3; 
         display: grid;
+
         grid-template-columns: 0.21fr 1.4fr 0.105fr 2.5fr 0.21fr;
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
@@ -424,6 +428,18 @@ background-size: cover;
             margin-top: 38% ;
           
   }
+  @media screen and (max-width: 768px) {
+    .div2 {
+        display: flex;  /* Switch to flexbox */
+        flex-direction: column; /* Stack children vertically */
+        gap: 10px; /* Add space between elements */
+    }
+
+    .div21, .div22 {
+        width: 100%; /* Make them full width */
+    }
+}
+
 </style>
 <body>
 <input type="checkbox" id="check">
@@ -440,10 +456,10 @@ background-size: cover;
         <i class="fas fa-times"></i>
     </label>
     <ul>
-        <li><a href="/MyWallet.html"><i class="fas fa-wallet"></i>My Wallet</a></li>
-        <li><a href="/MyCard.html"><i class="fas fa-credit-card"></i>My Card</a></li>
-        <li><a href="/chart.html"><i class="fas fa-chart-pie"></i>Finance Chart</a></li>
-        <li><a href="/Transactions.html"><i class="fas fa-file-invoice-dollar"></i>Recent Transactions</a></li>
+        <li><a href="{%  url  'mywallet' %}"><i class="fas fa-wallet"></i>My Wallet</a></li>
+        <li><a href="{%  url  'mycard' %}"><i class="fas fa-credit-card"></i>My Card</a></li>
+        <li><a href="{%  url  'chart' %}"><i class="fas fa-chart-pie"></i>Finance Chart</a></li>
+        <li><a href="{%  url  'transactions' %}"><i class="fas fa-file-invoice-dollar"></i>Recent Transactions</a></li>
     </ul>
 </div>
 <div class="content">
@@ -478,9 +494,9 @@ background-size: cover;
                 <div class="div212"> <h4 style="margin: 4%;">primary card</h4></div>
                 <div class="div213">
                     <span class="text">Add a New Card</span>
-                    <button class="add-button">
+                   <a href="{% url 'create_card' %}"> <button class="add-button">
                         <i class="fas fa-plus"></i>
-                    </button>
+                    </button></a>
                 </div>
             </div>
         <div class="div22">

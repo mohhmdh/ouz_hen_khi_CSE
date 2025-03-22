@@ -49,6 +49,38 @@ def signin(request):
         
         
 def mycard(request) :
-    cards=card.objects.all()
+   
+     if request.user.is_authenticated:
+        cards = card.objects.filter(user=request.user)  # Get all cards for the logged-in user
+        return render(request,'mycard.html' ,{'cards':cards})    
+     else:
+        cards = []
     
-    return render(request,'mycard.html' ,{'cards':cards})       
+     return render(request,'mycard.html' ,{'cards':cards}) 
+    
+
+
+def create_card(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            card_n = request.POST['card_n']
+            e_date = request.POST['e_date']
+            cvv = request.POST['cvv']
+
+            # Create the card and associate it with the logged-in user
+            cardss = card.objects.create(
+                user=request.user,
+                card_n=card_n,  # Use card_n from model
+                e_date=e_date,  # Use e_date from model
+                cvv=cvv  # Use cvv from model
+            )
+            cardss.save()
+            return redirect('mycard')  # Redirect to the page where cards are listed
+        else:
+            return redirect('signin')  # Redirect to login page if user is not authenticated
+    else:
+        return render(request, 'createcard.html')
+    
+    
+    
+    
